@@ -10,10 +10,9 @@ import (
 	"regexp"
 )
 
+//const ansi = "[\u001B\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[a-zA-Z\\d]*)*)?\u0007)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PRZcf-ntqry=><~]))"
 const ansi = "(?i)[\u001B\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[a-zA-Z\\d]*)*)?\u0007)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PRZcf-ntqry=><~]))"
-
 var re = regexp.MustCompile(ansi)
-
 func Strip(str string) string {
 	return re.ReplaceAllString(str, "")
 }
@@ -62,13 +61,13 @@ func ec2Ls() {
 		for _, instance := range instances {
 			output = append(output, instanceOutput{
 				Name:          Strip(lib.EC2NameColored(instance)),
-				Type:          *instance.InstanceType,
-				State:         *instance.State.Name,
-				ID:            *instance.InstanceId,
-				Image:         *instance.ImageId,
-				Kind:          Strip(lib.EC2Kind(instance)),
-				SecurityGroup: Strip(lib.EC2SecurityGroups(instance.SecurityGroups)),
-				Tags:          Strip(lib.EC2Tags(instance.Tags)),
+                                Type:          Strip(*instance.InstanceType),
+                                State:         Strip(*instance.State.Name),
+                                ID:            Strip(*instance.InstanceId),
+                                Image:         Strip(*instance.ImageId),
+                                Kind:          Strip(lib.EC2Kind(instance)),
+                                SecurityGroup: Strip(lib.EC2SecurityGroups(instance.SecurityGroups)),
+                                Tags:          Strip(lib.EC2Tags(instance.Tags)),
 			})
 		}
 		jsonOutput, err := json.MarshalIndent(output, "", "  ")
