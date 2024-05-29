@@ -16,7 +16,7 @@ func init() {
 
 type ec2RebootArgs struct {
 	Selectors []string `arg:"positional,required" help:"instance-id | dns-name | private-dns-name | tag | vpc-id | subnet-id | security-group-id | ip-address | private-ip-address"`
-	Preview   bool     `arg:"-p,--preview"`
+	Preview   bool     `arg:"-p,--preview" help:"print INFO"`
 	Wait      bool     `arg:"-w,--wait" default:"false" help:"wait for ssh"`
 }
 
