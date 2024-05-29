@@ -21,7 +21,7 @@ type ec2RebootArgs struct {
 }
 
 func (ec2RebootArgs) Description() string {
-	return "\ndelete an ami\n"
+	return "\nReboot an ec2 Instance\n"
 }
 
 func ec2Reboot() {

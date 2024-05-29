@@ -31,7 +31,7 @@ type ec2LsArgs struct {
 }
 
 func (ec2LsArgs) Description() string {
-	return "\nlist ec2 instances\n"
+	return "\nList ec2 Instances\n"
 }
 
 type instanceOutput struct {
@@ -61,13 +61,13 @@ func ec2Ls() {
 		for _, instance := range instances {
 			output = append(output, instanceOutput{
 				Name:          Strip(lib.EC2NameColored(instance)),
-                                Type:          Strip(*instance.InstanceType),
-                                State:         Strip(*instance.State.Name),
-                                ID:            Strip(*instance.InstanceId),
-                                Image:         Strip(*instance.ImageId),
-                                Kind:          Strip(lib.EC2Kind(instance)),
-                                SecurityGroup: Strip(lib.EC2SecurityGroups(instance.SecurityGroups)),
-                                Tags:          Strip(lib.EC2Tags(instance.Tags)),
+                Type:          Strip(*instance.InstanceType),
+                State:         Strip(*instance.State.Name),
+                ID:            Strip(*instance.InstanceId),
+                Image:         Strip(*instance.ImageId),
+                Kind:          Strip(lib.EC2Kind(instance)),
+                SecurityGroup: Strip(lib.EC2SecurityGroups(instance.SecurityGroups)),
+                Tags:          Strip(lib.EC2Tags(instance.Tags)),
 			})
 		}
 		jsonOutput, err := json.MarshalIndent(output, "", "  ")
