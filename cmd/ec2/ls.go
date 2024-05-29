@@ -2,6 +2,7 @@ package cliaws
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/alexflint/go-arg"
 	"github.com/nathants/libaws/lib"
@@ -18,6 +19,7 @@ type ec2LsArgs struct {
 	State     string   `arg:"-s,--state" default:"" help:"running | pending | terminated | stopped"`
 	Dns       bool     `arg:"-d, --dns" help:"include public dns"`
 	PrivateIP bool     `arg:"-p, --private-ip" help:"include private ipv4"`
+	JSON      bool     `arg:"-j, --json" help:"output in JSON format"`
 }
 
 func (ec2LsArgs) Description() string {
@@ -32,6 +34,12 @@ func ec2Ls() {
 	if err != nil {
 		lib.Logger.Fatal("error: ", err)
 	}
+
+	if args.JSON {
+		outputJSON(instances)
+		return
+	}
+
 	fmt.Fprintln(os.Stderr, "name", "type", "state", "id", "image", "kind", "security-group", "tags")
 	count := 0
 	for _, instance := range instances {
@@ -68,6 +76,15 @@ func ec2Ls() {
 		)
 	}
 	if count == 0 {
+		os.Exit(1)
+	}
+}
+
+func outputJSON(instances []*lib.EC2Instance) {
+	enc := json.NewEncoder(os.Stdout)
+	enc.SetIndent("", "  ")
+	if err := enc.Encode(instances); err != nil {
+		fmt.Fprintf(os.Stderr, "error encoding JSON: %v\n", err)
 		os.Exit(1)
 	}
 }
